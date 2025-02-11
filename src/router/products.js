@@ -49,11 +49,4 @@ productsRouter.post("/add-product", userAuth, async (req, res) => {
   }
 });
 
-productsRouter.get("/wishlist", userAuth, async (req, res) => {
-  try {
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
 module.exports = productsRouter;
