@@ -20,7 +20,6 @@ const productModel = new mongoose.Schema(
     },
     discountPrice: {
       type: Number,
-      default: 0,
     },
     availability: {
       type: Boolean,

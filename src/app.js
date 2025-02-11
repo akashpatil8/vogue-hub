@@ -3,15 +3,17 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const connectDB = require("./config/database");
+const cookieParser = require("cookie-parser");
 
 app.use(cors());
 
 app.use(express.json());
+app.use(cookieParser());
 
-const userRouter = require("./router/user");
 const productsRouter = require("./router/products");
+const authRouter = require("./router/auth");
 
-app.use("/", userRouter);
+app.use("/", authRouter);
 app.use("/", productsRouter);
 
 connectDB()

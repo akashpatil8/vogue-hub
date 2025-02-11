@@ -1,10 +1,10 @@
 const express = require("express");
-const userRouter = express.Router();
+const authRouter = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../model/user");
 const jwt = require("jsonwebtoken");
 
-userRouter.post("/signup", async (req, res) => {
+authRouter.post("/signup", async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
 
@@ -23,6 +23,11 @@ userRouter.post("/signup", async (req, res) => {
 
     if (!user) throw new Error("User not created");
 
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_STRING, {
+      expiresIn: "1d",
+    });
+    res.cookie("token", token);
+
     await user.save();
 
     res.json({ message: "User created successfully", user });
@@ -31,7 +36,7 @@ userRouter.post("/signup", async (req, res) => {
   }
 });
 
-userRouter.post("/login", async (req, res) => {
+authRouter.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -64,4 +69,4 @@ userRouter.post("/login", async (req, res) => {
   }
 });
 
-module.exports = userRouter;
+module.exports = authRouter;
