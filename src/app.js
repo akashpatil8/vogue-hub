@@ -4,12 +4,14 @@ const cors = require("cors");
 const app = express();
 const connectDB = require("./config/database");
 
-const productsRouter = require("./router/products");
-
 app.use(cors());
 
 app.use(express.json());
 
+const userRouter = require("./router/user");
+const productsRouter = require("./router/products");
+
+app.use("/", userRouter);
 app.use("/", productsRouter);
 
 connectDB()

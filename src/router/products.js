@@ -1,9 +1,9 @@
 const express = require("express");
 const Product = require("../model/product");
-
+const { userAuth } = require("../middleware/userAuth");
 const productsRouter = express.Router();
 
-productsRouter.get("/products", async (req, res) => {
+productsRouter.get("/products", userAuth, async (req, res) => {
   try {
     const products = await Product.find();
     res.json({ products });
@@ -12,7 +12,7 @@ productsRouter.get("/products", async (req, res) => {
   }
 });
 
-productsRouter.post("/add-product", async (req, res) => {
+productsRouter.post("/add-product", userAuth, async (req, res) => {
   try {
     const {
       name,
@@ -44,6 +44,13 @@ productsRouter.post("/add-product", async (req, res) => {
 
     await product.save();
     res.json({ message: "Product created successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+productsRouter.get("/wishlist", userAuth, async (req, res) => {
+  try {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
