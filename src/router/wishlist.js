@@ -58,7 +58,6 @@ wishlistRouter.delete("/wishlist/:productId", userAuth, async (req, res) => {
       return res.status(404).json({ message: "Product not found in wishlist" });
 
     user.wishlist = user.wishlist.filter((id) => id.toString() !== productId);
-
     await user.save();
 
     res.json({ message: "Product removed from wishlist successfully" });

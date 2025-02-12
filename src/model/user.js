@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema(
     },
     password: { type: String, required: [true, "User password is required"] },
     wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }],
-    bag: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }],
+    cart: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }],
   },
   { timestamps: true }
 );
