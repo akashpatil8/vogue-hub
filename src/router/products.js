@@ -12,7 +12,7 @@ productsRouter.get("/products", userAuth, async (req, res) => {
   }
 });
 
-productsRouter.post("/add-product", userAuth, async (req, res) => {
+productsRouter.post("/product", userAuth, async (req, res) => {
   try {
     const {
       name,

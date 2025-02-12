@@ -10,15 +10,15 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
-const productsRouter = require("./router/products");
-const authRouter = require("./router/auth");
-const wishlistRouter = require("./router/wishlist");
 const cartRouter = require("./router/cart");
+const authRouter = require("./router/auth");
+const productsRouter = require("./router/products");
+const wishlistRouter = require("./router/wishlist");
 
 app.use("/", authRouter);
+app.use("/", cartRouter);
 app.use("/", productsRouter);
 app.use("/", wishlistRouter);
-app.use("/", cartRouter);
 
 connectDB()
   .then(() => {

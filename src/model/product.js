@@ -5,42 +5,22 @@ const productModel = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+      unique: true,
+      trim: true,
     },
-    brand: {
-      type: String,
-      required: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-    size: {
-      type: String,
-      default: "N/A",
-    },
-    discountPrice: {
-      type: Number,
-    },
-    availability: {
-      type: Boolean,
-      default: true,
-    },
+    brand: { trim: true, type: String, required: true },
+    price: { trim: true, type: Number, required: true },
+    size: { trim: true, type: String, default: "N/A" },
+    discountedPrice: { trim: true, type: Number, default: 0 },
+    availability: { trim: true, type: Boolean, default: true },
     descrption: {
+      trim: true,
       type: String,
       default: "This is the default description of the product",
     },
-    rating: {
-      type: Number,
-      default: 0,
-    },
-    category: {
-      type: String,
-      required: true,
-    },
-    imageUrl: {
-      type: String,
-      required: true,
-    },
+    rating: { trim: true, type: Number, default: 0 },
+    category: { trim: true, type: String, required: true },
+    imageUrl: { trim: true, type: String, required: true, unique: true },
   },
   { timestamps: true }
 );
