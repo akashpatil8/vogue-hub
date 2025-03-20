@@ -37,7 +37,13 @@ wishlistRouter.post("/wishlist/:productId", userAuth, async (req, res) => {
     user.wishlist.push(productId);
     await user.save();
 
-    res.json({ message: "Product added to wishlist successfully" });
+    const populatedUser = await user.populate("wishlist");
+
+    const product = populatedUser.wishlist.find(
+      (item) => item._id.toString() === productId
+    );
+
+    res.json({ message: "Product added to wishlist successfully", product });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

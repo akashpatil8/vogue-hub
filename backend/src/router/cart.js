@@ -33,7 +33,13 @@ cartRouter.post("/cart/:productId", userAuth, async (req, res) => {
     user.cart.push(productId);
     await user.save();
 
-    res.json({ message: "Product added to cart successfully" });
+    const populatedCart = await user.populate("cart");
+
+    const product = populatedCart.cart.find(
+      (item) => item._id.toString() === productId
+    );
+
+    res.json({ message: "Product added to cart successfully", product });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
