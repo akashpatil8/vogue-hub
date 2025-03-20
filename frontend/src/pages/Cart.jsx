@@ -68,7 +68,7 @@ export default function Cart() {
           />
         </>
       )}
-      {!isCartLoading && cartItems?.length !== 0 && (
+      {!isCartLoading && cartItems?.length > 0 && (
         <>
           <NavigationBar itemCount={bagLength} to="/shop" name="shop" />
 

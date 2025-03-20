@@ -12,23 +12,20 @@ import {
 import toast from "react-hot-toast";
 import { addToCart } from "../redux/slices/cartSlice";
 import Spinner from "../ui/Spinner";
+import { getDiscount } from "../utils/helper";
 
 export default function ProductCard({ item, varients, i }) {
   const { _id, name, brand, price, discountedPrice, rating, imageUrl } = item;
   const dispatch = useDispatch();
 
+  const { wishlist } = useSelector((store) => store.wishlist);
+  const { cart } = useSelector((store) => store.cart);
   const isAddingProductToWishlist = useSelector(
     (store) => store.wishlist.loadingWishlistProducts[_id],
   );
-  const { wishlist } = useSelector((store) => store.wishlist);
-
   const isAddingProductToCart = useSelector(
     (store) => store.cart.loadingCartProducts[_id],
   );
-
-  const { cart } = useSelector((store) => store.cart);
-
-  const discount = Math.round(((price - discountedPrice) / price) * 100);
 
   const isProdustInWishlist = wishlist?.some((item) => item._id === _id);
   const isProductInCart = cart?.some((item) => item._id === _id);
@@ -123,7 +120,7 @@ export default function ProductCard({ item, varients, i }) {
               ${price}
             </p>
             <p className="text-xs font-light text-red-600 lg:text-sm">
-              ({discount}%)
+              ({getDiscount(price, discountedPrice)}%)
             </p>
           </>
         )}
@@ -147,7 +144,6 @@ export default function ProductCard({ item, varients, i }) {
               <LiaShoppingBagSolid className="text-base lg:text-xl" />
             </>
           )}
-          {/* Add to bag <LiaShoppingBagSolid className="text-base lg:text-xl" /> */}
         </button>
         <button
           onClick={handleAddOrRemoveFromWishlist}
@@ -164,11 +160,6 @@ export default function ProductCard({ item, varients, i }) {
               )}
             </>
           )}
-          {/* {isProdustInWishlist ? (
-            <IoHeart className="text-base lg:text-xl" />
-          ) : (
-            <IoHeartOutline className="text-base lg:text-xl" />
-          )} */}
         </button>
       </div>
     </motion.div>

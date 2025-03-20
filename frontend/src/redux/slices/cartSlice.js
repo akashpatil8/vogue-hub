@@ -3,9 +3,8 @@ import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 
 const initialState = {
-  cart: null,
+  cart: [],
   isCartLoading: false,
-
   cartError: null,
   loadingCartProducts: {},
 };
@@ -41,7 +40,7 @@ export const addToCart = createAsyncThunk(
 
       if (res.status !== 200) throw new Error(res);
 
-      return productId;
+      return res.data?.product; // Return the product data
     } catch (error) {
       return rejectedWithValue(
         error.response?.data?.message || error.response?.data || error.message,
@@ -89,6 +88,8 @@ const cartSlice = createSlice({
         state.cartError = null;
       })
       .addCase(addToCart.fulfilled, (state, action) => {
+        state.cartError = null;
+        state.cart = [...state.cart, action.payload]; // Add the product to the cart
         delete state.loadingCartProducts[action.meta.arg.productId]; // Remove loading state
       })
       .addCase(addToCart.rejected, (state, action) => {

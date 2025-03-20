@@ -3,7 +3,7 @@ import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 
 const initialState = {
-  wishlist: null,
+  wishlist: [],
   isWishlistLoading: false,
   wishlistError: null,
   loadingWishlistProducts: {},
@@ -40,7 +40,7 @@ export const addToWishlist = createAsyncThunk(
 
       if (res.status !== 200) throw new Error(res);
 
-      return productId;
+      return res.data.product; // Return the product data
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || error.response?.data || error.message,
@@ -84,28 +84,30 @@ const wishlistSlice = createSlice({
           (state.wishlistError = action.payload);
       })
       .addCase(addToWishlist.pending, (state, action) => {
-        (state.loadingWishlistProducts[action.payload] = true),
+        (state.loadingWishlistProducts[action.meta.arg.productId] = true),
           (state.wishlistError = null);
       })
       .addCase(addToWishlist.fulfilled, (state, action) => {
-        state.loadingWishlistProducts[action.payload] = false;
+        (state.wishlistError = null),
+          (state.wishlist = [...state.wishlist, action.payload]),
+          delete state.loadingWishlistProducts[action.meta.arg.productId];
       })
       .addCase(addToWishlist.rejected, (state, action) => {
-        (state.loadingWishlistProducts[action.payload] = false),
+        delete state.loadingWishlistProducts[action.meta.arg.productId],
           (state.wishlistError = action.payload);
       })
       .addCase(removeFromWislist.pending, (state, action) => {
-        (state.loadingWishlistProducts[action.payload] = true),
+        (state.loadingWishlistProducts[action.meta.arg.productId] = true),
           (state.wishlistError = null);
       })
       .addCase(removeFromWislist.fulfilled, (state, action) => {
-        (state.loadingWishlistProducts[action.payload] = false),
+        (state.loadingWishlistProducts[action.meta.arg.productId] = false),
           (state.wishlist = state.wishlist.filter(
             (item) => item._id !== action.payload,
           ));
       })
       .addCase(removeFromWislist.rejected, (state, action) => {
-        (state.loadingWishlistProducts[action.payload] = false),
+        (state.loadingWishlistProducts[action.meta.arg.productId] = false),
           (state.wishlistError = action.payload);
       });
   },
