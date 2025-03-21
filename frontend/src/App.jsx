@@ -1,14 +1,17 @@
+import { Provider } from "react-redux";
+import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import Login from "./pages/Login";
+
 import Home from "./pages/Home";
 import Cart from "./pages/Cart";
-import Wishlist from "./pages/Wishlist";
 import Shop from "./pages/Shop";
-import PageNotFound from "./pages/PageNotFound";
-import AppLayout from "./components/AppLayout";
-import { Provider } from "react-redux";
+import Login from "./pages/Login";
 import store from "./redux/store";
-import { Toaster } from "react-hot-toast";
+import Account from "./pages/Account";
+import Wishlist from "./pages/Wishlist";
+import Settings from "./pages/Settings";
+import AppLayout from "./components/AppLayout";
+import PageNotFound from "./pages/PageNotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
@@ -27,6 +30,8 @@ export default function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/account" element={<Account />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="/wishlist" element={<Wishlist />} />
           </Route>
           <Route path="/login" element={<Login />} />

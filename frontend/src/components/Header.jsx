@@ -7,7 +7,7 @@ import { GoPerson } from "react-icons/go";
 import { AnimatePresence, motion } from "framer-motion";
 
 import logo from "../../public/assets/logo.png";
-import DialogBox from "./DialogBox";
+import DropDownMenu from "./DropDownMenu";
 import { useDispatch, useSelector } from "react-redux";
 import { cartThunk } from "../redux/slices/cartSlice";
 
@@ -66,7 +66,7 @@ export default function Header() {
               <GoPerson className="cursor-pointer duration-150 lg:text-2xl lg:hover:scale-110" />
             </motion.div>
             <AnimatePresence>
-              {showDialog && <DialogBox setShowDialog={setShowDialog} />}
+              {showDialog && <DropDownMenu setShowDialog={setShowDialog} />}
             </AnimatePresence>
           </div>
 

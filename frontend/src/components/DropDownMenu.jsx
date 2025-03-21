@@ -6,8 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../redux/slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../ui/Spinner";
+import { dropDownMenuData } from "../../public/data/dropDownMenuData";
 
-export default function DialogBox({ setShowDialog }) {
+export default function DropDownMenu({ setShowDialog }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, isUserLoading } = useSelector((store) => store.user);
@@ -43,18 +44,18 @@ export default function DialogBox({ setShowDialog }) {
         Hello, <span className="font-bold capitalize">{user?.firstName}</span>
       </p>
       <hr className="mb-2 mt-1 w-full border-slate-300" />
-      <p className="my-1 cursor-pointer rounded-md p-2 text-sm font-light text-slate-600 duration-300 hover:bg-slate-200 hover:font-medium hover:text-slate-800 lg:text-base">
-        Account
-      </p>
-      <p className="my-1 cursor-pointer rounded-md p-2 text-sm font-light text-slate-600 duration-300 hover:bg-slate-200 hover:font-medium hover:text-slate-800 lg:text-base">
-        Wishlist
-      </p>
-      <p className="my-1 cursor-pointer rounded-md p-2 text-sm font-light text-slate-600 duration-300 hover:bg-slate-200 hover:font-medium hover:text-slate-800 lg:text-base">
-        Bag
-      </p>
-      <p className="my-1 cursor-pointer rounded-md p-2 text-sm font-light text-slate-600 duration-300 hover:bg-slate-200 hover:font-medium hover:text-slate-800 lg:text-base">
-        Settings
-      </p>
+      {dropDownMenuData.map((item) => (
+        <p
+          key={item.name}
+          onClick={() => {
+            navigate(item.to);
+            setShowDialog(false);
+          }}
+          className="my-1 cursor-pointer rounded-md p-2 text-sm font-light text-slate-600 hover:bg-slate-200 hover:font-medium hover:text-slate-800 lg:text-base"
+        >
+          {item.name}
+        </p>
+      ))}
       <hr className="my-2 w-full border-slate-300" />
       <Button type="small" onClick={handleLogout}>
         {isUserLoading ? <Spinner /> : <span>Logout</span>}

@@ -46,7 +46,7 @@ export default function Wishlist() {
       {isWishlistLoading && <Loader />}
       {!isWishlistLoading && wishlist?.length === 0 && (
         <>
-          <NavigationBar to="/home" name="Home" itemCount={wishlist?.length} />
+          <NavigationBar to="/shop" name="Shop" itemCount={wishlist?.length} />
           <H1 variants={variants} custom={0.2} className="uppercase lg:mb-8">
             Your Wishlist
           </H1>
