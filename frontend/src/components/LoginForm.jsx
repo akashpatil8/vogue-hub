@@ -25,11 +25,7 @@ export default function LoginForm() {
     defaultValues: { email: "akash@gmail.com", password: "Akash123" },
   });
 
-  function onSubmit({ email, password }) {
-    handleLogin(email, password);
-  }
-
-  const handleLogin = async (email, password) => {
+  const handleLogin = async ({ email, password }) => {
     try {
       const resultAction = await dispatch(loginUser({ email, password }));
 
@@ -47,7 +43,7 @@ export default function LoginForm() {
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(handleLogin)}
       className="mt-2 flex flex-col items-center lg:w-[65%]"
     >
       <div className="my-2 flex w-full items-center gap-2 rounded-sm bg-white px-2 py-2 lg:gap-4 lg:rounded-md lg:px-4">

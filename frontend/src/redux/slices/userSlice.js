@@ -10,6 +10,27 @@ const initialState = {
   userError: null,
 };
 
+export const signupUser = createAsyncThunk(
+  "user/signupUser",
+  async ({ firstName, lastName, email, password }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        BASE_URL + "/signup",
+        { firstName, lastName, email, password },
+        { withCredentials: true },
+      );
+
+      if (response.status !== 200) throw new Error(response);
+
+      return response.data.user;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || error.response?.data || error.message,
+      );
+    }
+  },
+);
+
 export const loginUser = createAsyncThunk(
   "user/loginUser",
   async ({ email, password }, { rejectWithValue }) => {
@@ -78,6 +99,19 @@ const userSlice = createSlice({
       })
       .addCase(logoutUser.rejected, (state, action) => {
         (state.isUserLoading = false), (state.userError = action.payload);
+      })
+      .addCase(signupUser.pending, (state) => {
+        state.isUserLoading = true;
+        state.userError = null;
+      })
+      .addCase(signupUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isUserLoading = false;
+        localStorage.setItem("user", JSON.stringify(action.payload));
+      })
+      .addCase(signupUser.rejected, (state, action) => {
+        state.isUserLoading = false;
+        state.userError = action.payload;
       });
   },
 });
