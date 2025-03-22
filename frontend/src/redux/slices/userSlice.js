@@ -8,6 +8,7 @@ const initialState = {
   user: savedUser,
   isUserLoading: false,
   userError: null,
+  isUserDataUpdating: false,
 };
 
 export const signupUser = createAsyncThunk(
@@ -75,6 +76,32 @@ export const logoutUser = createAsyncThunk(
   },
 );
 
+export const updateUser = createAsyncThunk(
+  "user/updateUser",
+  async ({ firstName, lastName, imageUrl, mobile }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        BASE_URL + "/user",
+        {
+          firstName,
+          lastName,
+          imageUrl,
+          mobile,
+        },
+        { withCredentials: true },
+      );
+
+      if (response.status !== 200) throw new Error(response);
+
+      return response.data?.user;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || error.response?.data || error.message,
+      );
+    }
+  },
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -112,6 +139,16 @@ const userSlice = createSlice({
       .addCase(signupUser.rejected, (state, action) => {
         state.isUserLoading = false;
         state.userError = action.payload;
+      })
+      .addCase(updateUser.pending, (state) => {
+        (state.isUserDataUpdating = true), (state.userError = null);
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        localStorage.setItem("user", JSON.stringify(action.payload));
+        (state.isUserDataUpdating = false), (state.user = action.payload);
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        (state.isUserDataUpdating = false), (state.userError = action.payload);
       });
   },
 });
