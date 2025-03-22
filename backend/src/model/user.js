@@ -30,6 +30,20 @@ const userSchema = new mongoose.Schema(
       required: [true, "User phone number required"],
       trim: true,
     },
+    imageUrl: {
+      type: String,
+      trim: true,
+    },
+    mobile: {
+      type: String,
+      trim: true,
+      validate: {
+        validator: function (val) {
+          return /^(\+\d{1,3}[- ]?)?\d{10}$/.test(val);
+        },
+        message: () => "Mobile number is not valid",
+      },
+    },
     password: { type: String, required: [true, "User password is required"] },
     wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }],
     cart: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }],

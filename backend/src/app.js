@@ -18,11 +18,13 @@ const cartRouter = require("./router/cart");
 const authRouter = require("./router/auth");
 const productsRouter = require("./router/products");
 const wishlistRouter = require("./router/wishlist");
+const userRouter = require("./router/user");
 
 app.use("/api", authRouter);
 app.use("/api", cartRouter);
 app.use("/api", productsRouter);
 app.use("/api", wishlistRouter);
+app.use("/api", userRouter);
 
 // Catch-all route to serve `index.html`
 app.get("/", (req, res) => {
