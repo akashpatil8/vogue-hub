@@ -44,7 +44,7 @@ cartRouter.post("/cart/:productId", userAuth, async (req, res) => {
 
     const populatedCart = await cart.populate("cartItems");
 
-    const product = populatedCart.cart.find(
+    const product = populatedCart.cartItems.find(
       (item) => item._id.toString() === productId
     );
 
