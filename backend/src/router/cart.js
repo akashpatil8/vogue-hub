@@ -1,5 +1,6 @@
 const cartRouter = require("express").Router();
 const { userAuth } = require("../middleware/userAuth");
+const Cart = require("../model/cart");
 const User = require("../model/user");
 const authRouter = require("./auth");
 
@@ -8,10 +9,10 @@ cartRouter.get("/cart", userAuth, async (req, res) => {
     const { user } = req;
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    const cartItems = await User.findById(user._id).populate("cart");
-    if (!cartItems) return res.status(404).json({ message: "Cart not found" });
+    const cart = await Cart.findOne({ userId: user._id }).populate("cartItems");
+    if (!cart) return res.status(404).json({ message: "Cart not found" });
 
-    res.json({ cart: cartItems.cart });
+    res.json({ cart: cart.cartItems });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -24,16 +25,24 @@ cartRouter.post("/cart/:productId", userAuth, async (req, res) => {
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    const productExists = user.cart.find((id) => id.toString() === productId);
+    let cart = await Cart.findOne({ userId: user._id });
+
+    if (!cart) {
+      cart = new Cart({ userId: user._id, cartItems: [] });
+    }
+
+    const productExists = cart.cartItems.find(
+      (id) => id.toString() === productId
+    );
     if (productExists)
       return res
         .status(400)
         .json({ message: "Product already exists in cart" });
 
-    user.cart.push(productId);
-    await user.save();
+    cart.cartItems.push(productId);
+    await cart.save();
 
-    const populatedCart = await user.populate("cart");
+    const populatedCart = await cart.populate("cartItems");
 
     const product = populatedCart.cart.find(
       (item) => item._id.toString() === productId
@@ -52,12 +61,21 @@ cartRouter.delete("/cart/:productId", userAuth, async (req, res) => {
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    const productExists = user.cart.find((id) => id.toString() === productId);
+    let cart = await Cart.findOne({ userId: user._id });
+    if (!cart) return res.status(404).json({ message: "Cart not found" });
+
+    const productExists = cart.cartItems.find(
+      (id) => id.toString() === productId
+    );
     if (!productExists)
       return res.status(404).json({ message: "Product not found in cart" });
 
-    user.cart = user.cart.filter((id) => id.toString() !== productId);
-    await user.save();
+    const cartItems = cart.cartItems.filter(
+      (id) => id.toString() !== productId
+    );
+    cart.cartItems = cartItems;
+
+    await cart.save();
 
     res.json({ message: "Product removed from cart successfully" });
   } catch (error) {
