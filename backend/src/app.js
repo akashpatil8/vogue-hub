@@ -19,12 +19,14 @@ const authRouter = require("./router/auth");
 const productsRouter = require("./router/products");
 const wishlistRouter = require("./router/wishlist");
 const userRouter = require("./router/user");
+const orderRouter = require("./router/order");
 
 app.use("/api", authRouter);
 app.use("/api", cartRouter);
 app.use("/api", productsRouter);
 app.use("/api", wishlistRouter);
 app.use("/api", userRouter);
+app.use("/api", orderRouter);
 
 // Catch-all route to serve `index.html`
 app.get("/", (req, res) => {
