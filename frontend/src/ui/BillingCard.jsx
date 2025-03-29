@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 import { GoArrowRight } from "react-icons/go";
-import toast from "react-hot-toast";
 
 import H2 from "./H2";
 import Button from "./Button";
 import BillingCardListTile from "./BillingCardListTile";
+import { useNavigate } from "react-router-dom";
 
 const varients = {
   initial: { translateY: -30, opacity: 0 },
@@ -15,7 +15,15 @@ const varients = {
   }),
 };
 
-export default function BillingCard({ shipping, tax, subtotal, total }) {
+export default function BillingCard({
+  shipping,
+  tax,
+  subtotal,
+  total,
+  cartItems,
+}) {
+  const navigate = useNavigate();
+
   return (
     <aside className="p-4 lg:w-[35%]">
       <H2 varients={varients} custom={0.2}>
@@ -62,9 +70,9 @@ export default function BillingCard({ shipping, tax, subtotal, total }) {
       />
 
       <Button
-        onClick={() => {
-          toast("Checkout functionality is not yet implemeted");
-        }}
+        onClick={() =>
+          navigate("/checkout/address", { state: { total, cartItems } })
+        }
         type="large"
         variants={varients}
         custom={0.9}

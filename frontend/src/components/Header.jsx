@@ -100,7 +100,7 @@ export default function Header() {
           >
             <HiOutlineShoppingBag
               onClick={() => {
-                navigate("/cart");
+                navigate("/checkout/cart");
               }}
               className="cursor-pointer text-slate-800 duration-150 lg:text-2xl lg:hover:scale-110"
             />

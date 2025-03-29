@@ -1,17 +1,17 @@
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { cartThunk } from "../redux/slices/cartSlice";
+import { cartThunk } from "../../redux/slices/cartSlice";
 import { useCallback, useEffect } from "react";
-import { usePriceCalculation } from "../hooks/usePriceCalculation";
-import NavigationBar from "../components/NavigationBar";
+import { usePriceCalculation } from "../../hooks/usePriceCalculation";
+import NavigationBar from "../NavigationBar";
 import { motion } from "framer-motion";
 
-import H1 from "../ui/H1";
-import Loader from "../ui/Loader";
-import BillingCard from "../ui/BillingCard";
-import emptyBag from "../../public/assets/empty-bag.webp";
-import CouponComponent from "../components/CouponComponent";
-import CartItemListTile from "../components/CartItemListTile";
+import H1 from "../../ui/H1";
+import Loader from "../../ui/Loader";
+import BillingCard from "../../ui/BillingCard";
+import emptyBag from "../../../public/assets/empty-bag.webp";
+import CouponComponent from "../CouponComponent";
+import CartItemListTile from "../CartItemListTile";
 
 const variants = {
   initial: { translateY: -30, opacity: 0 },
@@ -40,19 +40,19 @@ export default function Cart() {
     }
   }, [dispatch]);
 
-  const { total, tax, shipping, subtotal, bagLength } =
-    usePriceCalculation(cartItems);
+  const { total, tax, shipping, subtotal } = usePriceCalculation(cartItems);
 
   useEffect(() => {
     fetchCartItems();
   }, [fetchCartItems]);
 
   return (
-    <main className="flex flex-1 flex-col px-[5%] pt-4 lg:px-[8%]">
+    <section>
+      {/* <main className="flex flex-1 flex-col px-[5%] pt-4 lg:px-[8%]"> */}
       {isCartLoading && <Loader />}
       {!isCartLoading && cartItems?.length === 0 && (
         <>
-          <NavigationBar itemCount={bagLength} to="/shop" name="shop" />
+          {/* <NavigationBar itemCount={bagLength} to="/shop" name="shop" /> */}
 
           <H1 variants={variants} custom={0.2} className="uppercase lg:mb-4">
             Your Bag
@@ -70,13 +70,13 @@ export default function Cart() {
       )}
       {!isCartLoading && cartItems?.length > 0 && (
         <>
-          <NavigationBar itemCount={bagLength} to="/shop" name="shop" />
+          {/* <NavigationBar itemCount={bagLength} to="/shop" name="shop" /> */}
 
           <H1 variants={variants} custom={0.2} className="uppercase lg:mb-4">
             Your Bag
           </H1>
           <div className="lg:flex">
-            <aside className="mb-4 lg:mr-auto lg:w-[55%]">
+            <aside className="mb-4 lg:mr-auto lg:w-[60%]">
               <motion.ul
                 variants={variants}
                 initial="initial"
@@ -102,10 +102,11 @@ export default function Cart() {
               tax={tax}
               subtotal={subtotal}
               total={total}
+              cartItems={cartItems}
             />
           </div>
         </>
       )}
-    </main>
+    </section>
   );
 }

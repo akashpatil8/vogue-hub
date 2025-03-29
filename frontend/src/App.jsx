@@ -3,7 +3,7 @@ import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import Home from "./pages/Home";
-import Cart from "./pages/Cart";
+import Cart from "./components/checkout/Cart";
 import Shop from "./pages/Shop";
 import Login from "./pages/Login";
 import store from "./redux/store";
@@ -13,6 +13,9 @@ import Settings from "./pages/Settings";
 import AppLayout from "./components/AppLayout";
 import PageNotFound from "./pages/PageNotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Checkout from "./pages/Checkout";
+import Address from "./components/checkout/Address";
+import Payment from "./components/checkout/Payment";
 
 export default function App() {
   return (
@@ -26,15 +29,19 @@ export default function App() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<Navigate replace to="/home" />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/account" element={<Account />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/wishlist" element={<Wishlist />} />
+            <Route index element={<Navigate replace to="home" />} />
+            <Route path="home" element={<Home />} />
+            <Route path="shop" element={<Shop />} />
+            <Route path="account" element={<Account />} />
+            <Route path="checkout" element={<Checkout />}>
+              <Route path="cart" element={<Cart />} />
+              <Route path="address" element={<Address />} />
+              <Route path="payment" element={<Payment />} />
+            </Route>
+            <Route path="settings" element={<Settings />} />
+            <Route path="wishlist" element={<Wishlist />} />
           </Route>
-          <Route path="/login" element={<Login />} />
+          <Route path="login" element={<Login />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>

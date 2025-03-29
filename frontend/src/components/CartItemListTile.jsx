@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { CiSquareMinus, CiSquarePlus } from "react-icons/ci";
+// import { CiSquareMinus, CiSquarePlus } from "react-icons/ci";
 import { IoCloseOutline } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 import { removeFromCart } from "../redux/slices/cartSlice";
@@ -43,16 +43,18 @@ export default function CartItemListTile({ item, variants }) {
       custom={0.3}
     >
       <li className="my-2 flex items-center justify-between lg:my-4">
-        <img
-          src={imageUrl}
-          className="mr-2 h-14 w-10 object-cover lg:mr-4 lg:h-16 lg:w-12"
-          alt="product-img"
-        />
-        <div>
-          <h3 className="text-sm lg:mb-1 lg:text-base">{name}</h3>
-          <h4 className="text-xs text-slate-400 lg:text-sm">
-            Size: <span className="font-bold text-slate-600">{size}</span>
-          </h4>
+        <div className="flex items-center">
+          <img
+            src={imageUrl}
+            className="mr-2 h-14 w-10 object-cover lg:mr-4 lg:h-16 lg:w-12"
+            alt="product-img"
+          />
+          <div>
+            <h3 className="text-sm lg:mb-1 lg:text-base">{name}</h3>
+            <h4 className="text-xs text-slate-400 lg:text-sm">
+              Size: <span className="font-bold text-slate-600">{size}</span>
+            </h4>
+          </div>
         </div>
         {/* <div className="ml-auto mr-1 flex items-center">
           <CiSquareMinus
@@ -71,27 +73,28 @@ export default function CartItemListTile({ item, variants }) {
             // }}
           />
         </div> */}
-        <div className="w-20 text-center lg:ml-20 lg:mr-6 lg:w-28">
-          {currQuantity > 1 ? (
-            <>
+        <div className="flex items-center">
+          <div className="w-20 text-center lg:ml-20 lg:mr-6 lg:w-28">
+            {currQuantity > 1 ? (
+              <>
+                <h2 className="font-bold lg:text-xl">
+                  $
+                  {discountedPrice > 0
+                    ? currQuantity * discountedPrice
+                    : currQuantity * price}
+                </h2>
+                <p className="text-xs text-slate-500 lg:text-sm">
+                  {currQuantity} x $
+                  {discountedPrice > 0 ? discountedPrice : price}
+                </p>
+              </>
+            ) : (
               <h2 className="font-bold lg:text-xl">
-                $
-                {discountedPrice > 0
-                  ? currQuantity * discountedPrice
-                  : currQuantity * price}
+                ${discountedPrice > 0 ? discountedPrice : price}
               </h2>
-              <p className="text-xs text-slate-500 lg:text-sm">
-                {currQuantity} x $
-                {discountedPrice > 0 ? discountedPrice : price}
-              </p>
-            </>
-          ) : (
-            <h2 className="font-bold lg:text-xl">
-              ${discountedPrice > 0 ? discountedPrice : price}
-            </h2>
-          )}
-        </div>
-        {/* {isDeletingItem ? (
+            )}
+          </div>
+          {/* {isDeletingItem ? (
           <Spinner />
         ) : (
           <IoCloseOutline
@@ -99,9 +102,10 @@ export default function CartItemListTile({ item, variants }) {
             className="hover:cursor-pointer lg:text-2xl"
           />
         )} */}
-        <button onClick={handleRemoveFromCart}>
-          <IoCloseOutline />
-        </button>
+          <button onClick={handleRemoveFromCart}>
+            <IoCloseOutline />
+          </button>
+        </div>
       </li>
       <hr />
     </motion.div>
