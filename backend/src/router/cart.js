@@ -9,10 +9,14 @@ cartRouter.get("/cart", userAuth, async (req, res) => {
     const { user } = req;
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    const cart = await Cart.findOne({ userId: user._id }).populate("cartItems");
-    if (!cart) return res.status(404).json({ message: "Cart not found" });
+    let cart = await Cart.findOne({ userId: user._id });
+    if (!cart) {
+      cart = new Cart({ userId: user._id, cartItems: [] });
+    }
 
-    res.json({ cart: cart.cartItems });
+    const populatedCart = await cart.populate("cartItems");
+
+    res.json({ cart: populatedCart.cartItems });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
