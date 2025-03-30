@@ -18,8 +18,6 @@ export default function Address() {
     formState: { errors },
   } = useForm();
 
-  console.log(total, cartItems, "cartItems");
-
   const handleFormSubmit = ({ name, mobile, street, city, state, postal }) => {
     if (cartItems.length === 0) return toast.error("Please add items to cart");
     const itemIds = cartItems.map((item) => item._id);
@@ -44,7 +42,7 @@ export default function Address() {
       <hr className="my-2 lg:my-4" />
       <form
         onSubmit={handleSubmit(handleFormSubmit)}
-        className="mt-4 flex flex-col gap-4 lg:mt-8 lg:max-w-[50%]"
+        className="my-4 flex flex-col gap-4 lg:mt-8 lg:max-w-[50%]"
       >
         <input
           type="text"

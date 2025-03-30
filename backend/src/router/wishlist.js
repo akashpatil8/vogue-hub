@@ -1,6 +1,7 @@
 const wishlistRouter = require("express").Router();
 const User = require("../model/user");
 const { userAuth } = require("../middleware/userAuth");
+const Wishlist = require("../model/wishlist");
 
 wishlistRouter.get("/wishlist", userAuth, async (req, res) => {
   try {
@@ -8,11 +9,18 @@ wishlistRouter.get("/wishlist", userAuth, async (req, res) => {
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    const wishlistItems = await User.findById(user._id).populate("wishlist");
-    if (!wishlistItems)
+    let wishlist = await Wishlist.findOne({ userId: user._id });
+
+    if (!wishlist) {
+      wishlist = new Wishlist({ userId: user._id, wishlistItems: [] });
+    }
+
+    if (!wishlist)
       return res.status(404).json({ message: "Wishlist not found" });
 
-    res.json({ wishlist: wishlistItems.wishlist });
+    const populatedWishlist = await wishlist.populate("wishlistItems");
+
+    res.json({ wishlist: populatedWishlist.wishlistItems });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -25,7 +33,13 @@ wishlistRouter.post("/wishlist/:productId", userAuth, async (req, res) => {
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    const productExists = user.wishlist.find(
+    let wishlist = await Wishlist.findOne({ userId: user._id });
+
+    if (!wishlist) {
+      wishlist = new Wishlist({ userId: user._id, wishlistItems: [] });
+    }
+
+    const productExists = wishlist.wishlistItems.find(
       (id) => id.toString() === productId
     );
 
@@ -34,12 +48,12 @@ wishlistRouter.post("/wishlist/:productId", userAuth, async (req, res) => {
         .status(400)
         .json({ message: "Product already exists in wishlist" });
 
-    user.wishlist.push(productId);
-    await user.save();
+    wishlist.wishlistItems.push(productId);
+    await wishlist.save();
 
-    const populatedUser = await user.populate("wishlist");
+    const populatedWishlist = await wishlist.populate("wishlistItems");
 
-    const product = populatedUser.wishlist.find(
+    const product = populatedWishlist.wishlistItems.find(
       (item) => item._id.toString() === productId
     );
 
@@ -56,15 +70,21 @@ wishlistRouter.delete("/wishlist/:productId", userAuth, async (req, res) => {
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    const productExists = user.wishlist.find(
+    const wishlist = await Wishlist.findOne({ userId: user._id });
+    if (!wishlist)
+      return res.status(404).json({ message: "Wishlist not found" });
+
+    const productExists = wishlist.wishlistItems.find(
       (id) => id.toString() === productId
     );
 
     if (!productExists)
       return res.status(404).json({ message: "Product not found in wishlist" });
 
-    user.wishlist = user.wishlist.filter((id) => id.toString() !== productId);
-    await user.save();
+    wishlist.wishlistItems = wishlist.wishlistItems.filter(
+      (id) => id.toString() !== productId
+    );
+    await wishlist.save();
 
     res.json({ message: "Product removed from wishlist successfully" });
   } catch (error) {

@@ -34,6 +34,7 @@ export default function App() {
             <Route path="shop" element={<Shop />} />
             <Route path="account" element={<Account />} />
             <Route path="checkout" element={<Checkout />}>
+              <Route index element={<Navigate to="cart" replace />} />
               <Route path="cart" element={<Cart />} />
               <Route path="address" element={<Address />} />
               <Route path="payment" element={<Payment />} />
