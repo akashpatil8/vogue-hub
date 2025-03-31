@@ -19,17 +19,24 @@ const orderModel = new mongoose.Schema(
       type: String,
       required: [true, "Shipping address is required"],
     },
-    paymentStatus: {
-      type: String,
-      enum: ["pending", "completed", "failed"],
-      default: "pending",
-    },
     totalPrice: {
-      type: Number,
+      type: String,
       required: [true, "Total price is required"],
       default: 0,
     },
     orderItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }],
+    paymentId: {
+      type: String,
+      required: [true, "Payment ID is required"],
+    },
+    orderId: {
+      type: String,
+      required: [true, "Order ID is required"],
+    },
+    signature: {
+      type: String,
+      required: [true, "Signature is required"],
+    },
   },
   { timestamps: true }
 );
