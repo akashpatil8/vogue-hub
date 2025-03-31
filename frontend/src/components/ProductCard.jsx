@@ -112,12 +112,12 @@ export default function ProductCard({ item, varients, i }) {
 
       <div className="mt-2 flex items-center gap-2">
         <p className="text-xs font-bold lg:text-sm">
-          ${discountedPrice > 0 ? discountedPrice : price}
+          ₹{discountedPrice > 0 ? discountedPrice : price}
         </p>
         {discountedPrice > 0 && (
           <>
             <p className="text-left text-xs text-stone-400 line-through">
-              ${price}
+              ₹{price}
             </p>
             <p className="text-xs font-light text-red-600 lg:text-sm">
               ({getDiscount(price, discountedPrice)}%)

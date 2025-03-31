@@ -19,7 +19,7 @@ export default function BillingCardListTile({
         <h4 className="font-semibold capitalize text-slate-800 lg:text-lg">
           {title}
         </h4>
-        <h4 className="font-bold lg:text-xl">${value}</h4>
+        <h4 className="font-bold lg:text-xl">₹{value}</h4>
       </motion.div>
     );
 
@@ -34,7 +34,7 @@ export default function BillingCardListTile({
       <h4 className="text-xs font-light capitalize text-slate-500 lg:text-sm">
         {title}
       </h4>
-      <h4 className="text-xs font-semibold lg:text-base">${value}</h4>
+      <h4 className="text-xs font-semibold lg:text-base">₹{value}</h4>
     </motion.div>
   );
 }

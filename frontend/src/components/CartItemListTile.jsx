@@ -78,19 +78,19 @@ export default function CartItemListTile({ item, variants }) {
             {currQuantity > 1 ? (
               <>
                 <h2 className="font-bold lg:text-xl">
-                  $
+                  ₹
                   {discountedPrice > 0
                     ? currQuantity * discountedPrice
                     : currQuantity * price}
                 </h2>
                 <p className="text-xs text-slate-500 lg:text-sm">
-                  {currQuantity} x $
+                  {currQuantity} x ₹
                   {discountedPrice > 0 ? discountedPrice : price}
                 </p>
               </>
             ) : (
               <h2 className="font-bold lg:text-xl">
-                ${discountedPrice > 0 ? discountedPrice : price}
+                ₹{discountedPrice > 0 ? discountedPrice : price}
               </h2>
             )}
           </div>

@@ -65,7 +65,7 @@ export default function BillingCard({
         varients={varients}
         custom={0.8}
         type="total"
-        value={total.toFixed(2)}
+        value={total}
         title="total"
       />
 

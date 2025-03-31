@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { cartThunk } from "../../redux/slices/cartSlice";
 import { useCallback, useEffect } from "react";
 import { usePriceCalculation } from "../../hooks/usePriceCalculation";
-import NavigationBar from "../NavigationBar";
 import { motion } from "framer-motion";
 
 import H1 from "../../ui/H1";
@@ -48,12 +47,9 @@ export default function Cart() {
 
   return (
     <section>
-      {/* <main className="flex flex-1 flex-col px-[5%] pt-4 lg:px-[8%]"> */}
       {isCartLoading && <Loader />}
       {!isCartLoading && cartItems?.length === 0 && (
         <>
-          {/* <NavigationBar itemCount={bagLength} to="/shop" name="shop" /> */}
-
           <H1 variants={variants} custom={0.2} className="uppercase lg:mb-4">
             Your Bag
           </H1>
@@ -70,8 +66,6 @@ export default function Cart() {
       )}
       {!isCartLoading && cartItems?.length > 0 && (
         <>
-          {/* <NavigationBar itemCount={bagLength} to="/shop" name="shop" /> */}
-
           <H1 variants={variants} custom={0.2} className="uppercase lg:mb-4">
             Your Bag
           </H1>
