@@ -4,6 +4,7 @@ import { BASE_URL } from "../../utils/constants";
 
 const initialState = {
   orders: [],
+  ordersCreated: [],
   isOdersLoading: false,
   isOrdersError: null,
 };
@@ -87,7 +88,7 @@ const orderSlice = createSlice({
       })
       .addCase(addOrder.fulfilled, (state, action) => {
         state.isOdersLoading = false;
-        state.orders.push(action.payload);
+        state.ordersCreated.push(action.payload);
       })
       .addCase(addOrder.rejected, (state, action) => {
         state.isOdersLoading = false;

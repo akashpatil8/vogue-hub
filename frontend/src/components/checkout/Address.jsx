@@ -37,88 +37,125 @@ export default function Address() {
   };
 
   return (
-    <section>
-      <h2 className="text-2xl font-semibold">Address</h2>
-      <hr className="my-2 lg:my-4" />
-      <form
-        onSubmit={handleSubmit(handleFormSubmit)}
-        className="my-4 flex flex-col gap-4 lg:mt-8 lg:max-w-[50%]"
-      >
-        <input
-          type="text"
-          placeholder="Full Name"
-          className="rounded border border-gray-300 p-2"
-          {...register("name", {
-            required: "Name is required",
-            minLength: {
-              value: 3,
-              message: "Name must be at least 3 characters",
-            },
-          })}
-        />
-        {errors?.name?.message && (
-          <p className="-my-2 ml-auto text-[0.6rem] text-red-400 lg:text-xs">
-            {errors?.name?.message}
-          </p>
-        )}
-        <input
-          type="text"
-          placeholder="Mobile Number"
-          className="rounded border border-gray-300 p-2"
-          {...register("mobile", {
-            required: "Mobile number is required",
-          })}
-        />
-        {errors?.mobile?.message && (
-          <p className="-my-2 ml-auto text-[0.6rem] text-red-400 lg:text-xs">
-            {errors?.mobile?.message}
-          </p>
-        )}
-        <input
-          type="text"
-          placeholder="Street Address"
-          className="rounded border border-gray-300 p-2"
-          {...register("street", {
-            required: "Street address is required",
-          })}
-        />
-        {errors?.street?.message && (
-          <p className="-my-2 ml-auto text-[0.6rem] text-red-400 lg:text-xs">
-            {errors?.street?.message}
-          </p>
-        )}
-        <input
-          type="text"
-          placeholder="City"
-          className="rounded border border-gray-300 p-2"
-          {...register("city")}
-        />
-        <input
-          type="text"
-          placeholder="State/Province/Region"
-          className="rounded border border-gray-300 p-2"
-          {...register("state", { required: "State is required" })}
-        />
-        {errors?.state?.message && (
-          <p className="-my-2 ml-auto text-[0.6rem] text-red-400 lg:text-xs">
-            {errors?.state?.message}
-          </p>
-        )}
-        <input
-          type="text"
-          placeholder="Postal Code"
-          className="rounded border border-gray-300 p-2"
-          {...register("postal", {
-            required: "Postal code is required",
-          })}
-        />
-        {errors?.postal?.message && (
-          <p className="-my-2 ml-auto text-[0.6rem] text-red-400 lg:text-xs">
-            {errors?.postal?.message}
-          </p>
-        )}
-        <Button btnType="submit">Continue</Button>
-      </form>
+    <section className="mb-4 mt-2 gap-4 lg:flex">
+      <aside className="lg:flex-1">
+        <h2 className="text-2xl font-semibold">Address</h2>
+        <hr className="my-2" />
+        <form
+          onSubmit={handleSubmit(handleFormSubmit)}
+          className="my-4 flex w-full flex-col gap-4 lg:mt-8 lg:max-w-[50%]"
+        >
+          <input
+            type="text"
+            placeholder="Full Name"
+            className="rounded border border-gray-300 p-2"
+            {...register("name", {
+              required: "Name is required",
+              minLength: {
+                value: 3,
+                message: "Name must be at least 3 characters",
+              },
+            })}
+          />
+          {errors?.name?.message && (
+            <p className="-my-2 ml-auto text-[0.6rem] text-red-400 lg:text-xs">
+              {errors?.name?.message}
+            </p>
+          )}
+          <input
+            type="text"
+            placeholder="Mobile Number"
+            className="rounded border border-gray-300 p-2"
+            {...register("mobile", {
+              required: "Mobile number is required",
+            })}
+          />
+          {errors?.mobile?.message && (
+            <p className="-my-2 ml-auto text-[0.6rem] text-red-400 lg:text-xs">
+              {errors?.mobile?.message}
+            </p>
+          )}
+          <input
+            type="text"
+            placeholder="Street Address"
+            className="rounded border border-gray-300 p-2"
+            {...register("street", {
+              required: "Street address is required",
+            })}
+          />
+          {errors?.street?.message && (
+            <p className="-my-2 ml-auto text-[0.6rem] text-red-400 lg:text-xs">
+              {errors?.street?.message}
+            </p>
+          )}
+          <input
+            type="text"
+            placeholder="City"
+            className="rounded border border-gray-300 p-2"
+            {...register("city")}
+          />
+          <input
+            type="text"
+            placeholder="State/Province/Region"
+            className="rounded border border-gray-300 p-2"
+            {...register("state", { required: "State is required" })}
+          />
+          {errors?.state?.message && (
+            <p className="-my-2 ml-auto text-[0.6rem] text-red-400 lg:text-xs">
+              {errors?.state?.message}
+            </p>
+          )}
+          <input
+            type="text"
+            placeholder="Postal Code"
+            className="rounded border border-gray-300 p-2"
+            {...register("postal", {
+              required: "Postal code is required",
+            })}
+          />
+          {errors?.postal?.message && (
+            <p className="-my-2 ml-auto text-[0.6rem] text-red-400 lg:text-xs">
+              {errors?.postal?.message}
+            </p>
+          )}
+        </form>
+      </aside>
+      <div className="w-[1px] bg-[#e5e7eb]"></div>
+      <aside className="lg:w-[35%]">
+        <h2 className="text-2xl font-semibold">Order Summary</h2>
+        <hr className="my-2" />
+        <div className="flex max-h-[225px] flex-col gap-2 overflow-auto lg:mt-8">
+          {cartItems.map((item) => (
+            <div
+              key={item._id}
+              className="flex items-center justify-between rounded border border-gray-300 p-1"
+            >
+              <div className="flex items-center gap-2">
+                <img
+                  src={item.imageUrl}
+                  alt={item.name}
+                  className="h-[40px] w-[25px] rounded-sm object-cover"
+                />
+                <p className="text-xs">{item.name}</p>
+              </div>
+              <p className="text-sm font-semibold">₹{item.price}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 flex items-center justify-between rounded border border-gray-300 p-2 font-semibold">
+          <p>Total</p>
+          <p>₹{total}</p>
+        </div>
+        <div className="pt-4">
+          <Button
+            type="large"
+            btnType="submit"
+            onClick={handleSubmit(handleFormSubmit)}
+          >
+            Proceed to Payment
+          </Button>
+        </div>
+      </aside>
     </section>
   );
 }
