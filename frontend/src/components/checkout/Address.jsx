@@ -18,7 +18,14 @@ export default function Address() {
     formState: { errors },
   } = useForm();
 
-  const handleFormSubmit = ({ name, mobile, street, city, state, postal }) => {
+  const handleFormSubmit = async ({
+    name,
+    mobile,
+    street,
+    city,
+    state,
+    postal,
+  }) => {
     if (cartItems.length === 0) return toast.error("Please add items to cart");
     const itemIds = cartItems.map((item) => item._id);
 
@@ -31,9 +38,14 @@ export default function Address() {
       orderItems: itemIds,
     };
 
-    dispatch(addOrder(backendData));
+    const resultAction = await dispatch(addOrder(backendData));
 
-    navigate("/checkout/payment");
+    if (addOrder.fulfilled.match(resultAction)) {
+      navigate("/checkout/payment");
+    } else {
+      console.error(resultAction.payload || "Error while placing order");
+      toast.error(resultAction.payload || "Error while placing order");
+    }
   };
 
   return (
