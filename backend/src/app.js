@@ -24,10 +24,10 @@ const orderRouter = require("./router/order");
 
 app.use("/api", authRouter);
 app.use("/api", cartRouter);
-app.use("/api", productsRouter);
-app.use("/api", wishlistRouter);
 app.use("/api", userRouter);
 app.use("/api", orderRouter);
+app.use("/api", productsRouter);
+app.use("/api", wishlistRouter);
 
 // Catch-all route to serve `index.html`
 app.get("/", (req, res) => {
