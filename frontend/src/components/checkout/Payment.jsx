@@ -32,10 +32,15 @@ export default function Payment() {
 
       if (res.status === 200) {
         toast.success("Payment Successful");
-        navigate("/checkout/cart");
+        navigate("/order/confirmation", {
+          state: {
+            orderId: razorpay_order_id,
+            totalPrice: order?.notes?.totalPrice,
+          },
+        });
       }
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
     }
   };
 
@@ -77,6 +82,7 @@ export default function Payment() {
 
   useEffect(() => {
     handelPayments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <></>;

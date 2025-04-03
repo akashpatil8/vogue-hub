@@ -15,3 +15,14 @@ export const loadRazorpayScript = () => {
     }
   });
 };
+
+export const getDeliveryDate = (daysAhead) => {
+  const today = new Date();
+  today.setDate(today.getDate() + daysAhead);
+
+  const day = String(today.getDate()).padStart(2, "0");
+  const month = String(today.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+  const year = today.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};

@@ -16,6 +16,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Checkout from "./pages/Checkout";
 import Address from "./components/checkout/Address";
 import Payment from "./components/checkout/Payment";
+import OrderConfirmation from "./pages/OrderConfirmation";
 
 export default function App() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
             </Route>
             <Route path="settings" element={<Settings />} />
             <Route path="wishlist" element={<Wishlist />} />
+            <Route path="order/confirmation" element={<OrderConfirmation />} />
           </Route>
           <Route path="login" element={<Login />} />
           <Route path="*" element={<PageNotFound />} />
