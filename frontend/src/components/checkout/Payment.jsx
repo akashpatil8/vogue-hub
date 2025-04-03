@@ -53,7 +53,7 @@ export default function Payment() {
       }
 
       const options = {
-        key: import.meta.env.VITE_TEST_KEY_ID,
+        key: "rzp_test_x0fJr13Cv7IjSn",
         amount: order?.amount,
         currency: order?.currency,
         name: "VogueHub",
