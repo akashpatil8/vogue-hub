@@ -9,6 +9,7 @@ const initialState = {
   isUserLoading: false,
   userError: null,
   isUserDataUpdating: false,
+  isUserProfilePictureLoading: false,
 };
 
 export const signupUser = createAsyncThunk(
@@ -78,14 +79,13 @@ export const logoutUser = createAsyncThunk(
 
 export const updateUser = createAsyncThunk(
   "user/updateUser",
-  async ({ firstName, lastName, imageUrl, mobile }, { rejectWithValue }) => {
+  async ({ firstName, lastName, mobile }, { rejectWithValue }) => {
     try {
       const response = await axios.put(
         BASE_URL + "/user",
         {
           firstName,
           lastName,
-          imageUrl,
           mobile,
         },
         { withCredentials: true },
@@ -94,6 +94,27 @@ export const updateUser = createAsyncThunk(
       if (response.status !== 200) throw new Error(response);
 
       return response.data?.user;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || error.response?.data || error.message,
+      );
+    }
+  },
+);
+
+export const uploadProfilePicture = createAsyncThunk(
+  "user/uploadProfilePicture",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        BASE_URL + "/user/profile-image",
+        formData,
+        { withCredentials: true },
+      );
+
+      if (response.status !== 200) throw new Error(response);
+
+      return response.data.message;
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || error.response?.data || error.message,
@@ -149,6 +170,16 @@ const userSlice = createSlice({
       })
       .addCase(updateUser.rejected, (state, action) => {
         (state.isUserDataUpdating = false), (state.userError = action.payload);
+      })
+      .addCase(uploadProfilePicture.pending, (state) => {
+        (state.isUserProfilePictureLoading = true), (state.userError = null);
+      })
+      .addCase(uploadProfilePicture.fulfilled, (state) => {
+        state.isUserProfilePictureLoading = false;
+      })
+      .addCase(uploadProfilePicture.rejected, (state, action) => {
+        (state.isUserProfilePictureLoading = false),
+          (state.userError = action.payload);
       });
   },
 });

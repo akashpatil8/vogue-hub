@@ -1,16 +1,26 @@
-import { LuMail, LuPhone, LuUserRound } from "react-icons/lu";
-import Button from "../../ui/Button";
+import toast from "react-hot-toast";
+
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { HiMiniPencil } from "react-icons/hi2";
-import profileIcon from "../../../public/assets/profile-icon.png";
-import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser } from "../../redux/slices/userSlice";
+import { LuMail, LuPhone, LuUserRound } from "react-icons/lu";
+
+import Button from "../../ui/Button";
 import Spinner from "../../ui/Spinner";
+import profileIcon from "../../../public/assets/profile-icon.png";
+
+import { updateUser, uploadProfilePicture } from "../../redux/slices/userSlice";
 
 export default function ProfileComponent() {
-  const { user, isUserDataUpdating } = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const [previewImage, setPreviewImage] = useState(null);
+  const [profilePicture, setProfilePicture] = useState(null);
+
+  const { user, isUserDataUpdating, isUserProfilePictureLoading } = useSelector(
+    (store) => store.user,
+  );
+
   const {
     register,
     handleSubmit,
@@ -23,22 +33,17 @@ export default function ProfileComponent() {
     },
   });
 
-  const handleProfileSave = async ({
-    firstName,
-    lastName,
-    mobile,
-    imageUrl,
-  }) => {
+  const handleProfileSave = async ({ firstName, lastName, mobile }) => {
     try {
       const resultAction = await dispatch(
-        updateUser({ firstName, lastName, mobile, imageUrl }),
+        updateUser({ firstName, lastName, mobile }),
       );
 
       if (updateUser.fulfilled.match(resultAction)) {
         toast.success("Profile saved successfully!");
       } else {
-        console.error(resultAction.payload || "Sign Up Error");
-        toast.error(resultAction.payload || "Error while signing up");
+        console.error(resultAction.payload || "Profile saving Error");
+        toast.error(resultAction.payload || "Error while saving profile");
       }
     } catch (error) {
       console.error(error?.message);
@@ -46,17 +51,81 @@ export default function ProfileComponent() {
     }
   };
 
+  const handleOnChangeImage = (e) => {
+    setProfilePicture(e.target.files[0]);
+
+    const image = URL.createObjectURL(e.target.files[0]);
+    setPreviewImage(image);
+  };
+
+  const handleSaveProfilePicture = async () => {
+    const formData = new FormData();
+    formData.append("file", profilePicture);
+
+    const resultAction = await dispatch(uploadProfilePicture(formData));
+
+    if (uploadProfilePicture.fulfilled.match(resultAction)) {
+      toast.success("Profile picture saved successfully!");
+    } else {
+      console.error(resultAction.payload || "Profile saving Error");
+      toast.error(resultAction.payload || "Error while saving profile");
+    }
+    document.getElementById("my_modal_2").close();
+    setPreviewImage(null);
+  };
+
   return (
     <form
       onSubmit={handleSubmit(handleProfileSave)}
       className="mt-2 flex w-[60%] flex-col items-center"
     >
+      {/* Dialog for image upload */}
+      <dialog id="my_modal_2" className="modal">
+        <div className="modal-box flex flex-col">
+          <h3 className="text-lg font-bold">Please select profile picture</h3>
+          <div className="avatar mx-auto my-6">
+            <div className="w-44 rounded-full">
+              <img src={previewImage || profileIcon} />
+            </div>
+          </div>
+          <div className="mb-5">
+            <input
+              onChange={handleOnChangeImage}
+              type="file"
+              className="file-input w-full max-w-xs"
+            />
+          </div>
+          <div className="flex gap-2">
+            <Button onClick={handleSaveProfilePicture}>
+              {isUserProfilePictureLoading ? "Loading" : "Upload"}
+            </Button>
+
+            <Button
+              onClick={() => document.getElementById("my_modal_2").close()}
+            >
+              Close
+            </Button>
+          </div>
+        </div>
+      </dialog>
+
       <div className="avatar mb-8">
         <div className="w-24 rounded-full ring ring-slate-400 ring-offset-2 ring-offset-base-100">
-          <button className="absolute bottom-0 right-0 rounded-full border-[1px] border-slate-500 bg-slate-200 p-1">
+          <button
+            //Opens the dialog for image upload
+            onClick={() => document.getElementById("my_modal_2").showModal()}
+            type="button"
+            className="absolute bottom-0 right-0 rounded-full border-[1px] border-slate-500 bg-slate-200 p-1"
+          >
             <HiMiniPencil className="text-xs text-slate-500 lg:text-sm" />
           </button>
-          <img src={profileIcon} />
+          <img
+            src={
+              user.imageUrl
+                ? `http://127.0.0.1:4000/uploads/${user.imageUrl}`
+                : profileIcon
+            }
+          />
         </div>
       </div>
 
