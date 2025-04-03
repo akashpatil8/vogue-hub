@@ -13,6 +13,7 @@ app.use(cookieParser());
 
 // Serve static files from the frontend build
 app.use(express.static(path.join(__dirname, "dist")));
+app.use("/uploads", express.static("uploads"));
 
 const cartRouter = require("./router/cart");
 const authRouter = require("./router/auth");
