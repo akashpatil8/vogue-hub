@@ -42,7 +42,7 @@ export default function ProfileComponent() {
       if (updateUser.fulfilled.match(resultAction)) {
         toast.success("Profile saved successfully!");
       } else {
-        console.error(resultAction.payload || "Profile saving Error");
+        console.error(resultAction.payload || "Error while saving profile");
         toast.error(resultAction.payload || "Error while saving profile");
       }
     } catch (error) {
@@ -67,7 +67,7 @@ export default function ProfileComponent() {
     if (uploadProfilePicture.fulfilled.match(resultAction)) {
       toast.success("Profile picture saved successfully!");
     } else {
-      console.error(resultAction.payload || "Profile saving Error");
+      console.error(resultAction.payload || "Error while saving profile");
       toast.error(resultAction.payload || "Error while saving profile");
     }
     document.getElementById("my_modal_2").close();

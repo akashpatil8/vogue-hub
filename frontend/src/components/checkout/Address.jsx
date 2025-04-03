@@ -27,6 +27,7 @@ export default function Address() {
     postal,
   }) => {
     if (cartItems.length === 0) return toast.error("Please add items to cart");
+
     const itemIds = cartItems.map((item) => item._id);
 
     const backendData = {
