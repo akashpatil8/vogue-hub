@@ -30,7 +30,7 @@ app.use("/api", productsRouter);
 app.use("/api", wishlistRouter);
 
 // Catch-all route to serve `index.html`
-app.get("/", (req, res) => {
+app.get("*", (req, res) => {
   res.setHeader("Cache-Control", "no-store");
   res.sendFile(path.join(__dirname, "dist", "index.html"), {
     cacheControl: false,

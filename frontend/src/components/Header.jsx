@@ -1,14 +1,13 @@
+import { GoPerson } from "react-icons/go";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { IoMdHeartEmpty } from "react-icons/io";
-import { GoPerson } from "react-icons/go";
-// import { LuUser2 } from "react-icons/lu";
+import { HiOutlineShoppingBag } from "react-icons/hi2";
+import { useDispatch, useSelector } from "react-redux";
 import { AnimatePresence, motion } from "framer-motion";
 
-import logo from "../../public/assets/logo.png";
 import DropDownMenu from "./DropDownMenu";
-import { useDispatch, useSelector } from "react-redux";
+import logo from "../../public/assets/logo.png";
 import { cartThunk } from "../redux/slices/cartSlice";
 
 const varients = {
@@ -22,7 +21,6 @@ const varients = {
 
 export default function Header() {
   const [showDialog, setShowDialog] = useState(false);
-  // const { user } = useSelector((store) => store.user);
   const { cart } = useSelector((store) => store.cart);
 
   const dispatch = useDispatch();
