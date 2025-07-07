@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AnimatePresence, motion } from "framer-motion";
 
 import DropDownMenu from "./DropDownMenu";
-import logo from "../../public/assets/logo.png";
 import { cartThunk } from "../redux/slices/cartSlice";
 
 const varients = {
@@ -43,9 +42,9 @@ export default function Header() {
           className="cursor-pointer"
         >
           <img
-            src={logo}
+            src="https://ik.imagekit.io/akashpatil8/Voguehub/logo-dark.png?updatedAt=1751910271703"
             alt="logo-img"
-            className="h-7 transition-transform duration-200 lg:h-11 lg:hover:scale-110"
+            className="h-7 transition-transform duration-200 lg:h-11 lg:hover:scale-105"
           />
         </motion.button>
         <div className="flex items-center justify-end gap-2 text-end sm:gap-3 md:gap-5">

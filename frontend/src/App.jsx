@@ -17,6 +17,7 @@ import Checkout from "./pages/Checkout";
 import Address from "./components/checkout/Address";
 import Payment from "./components/checkout/Payment";
 import OrderConfirmation from "./pages/OrderConfirmation";
+import ResetPassword from "./pages/ResetPassword";
 
 export default function App() {
   return (
@@ -45,6 +46,7 @@ export default function App() {
             <Route path="order/confirmation" element={<OrderConfirmation />} />
           </Route>
           <Route path="login" element={<Login />} />
+          <Route path="reset-password" element={<ResetPassword />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
