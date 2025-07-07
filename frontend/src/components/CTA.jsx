@@ -38,9 +38,9 @@ export default function CTA() {
         whileInView="final"
         viewport={{ once: true }}
         custom={0.4}
-        className="mx-auto flex h-10 w-[70%] items-center justify-center gap-1 lg:h-14 lg:gap-2"
+        className="mx-auto flex h-10 w-[70%] items-center justify-center gap-1 lg:h-12 lg:gap-2"
       >
-        <div className="my-2 flex h-full items-center gap-2 rounded-sm bg-slate-100 px-2 lg:rounded-md lg:px-4">
+        <div className="flex h-full items-center gap-2 rounded-sm bg-slate-100 px-2 lg:rounded-md lg:px-4">
           <LuUserRound className="text-slate-500 lg:text-xl" />
           <input
             id="email"
@@ -49,14 +49,17 @@ export default function CTA() {
             className="h-6 bg-slate-100 text-sm text-slate-600 placeholder:text-slate-400 focus:outline-none lg:h-8 lg:text-base lg:placeholder:text-base"
           />
         </div>
-        <Button
-          onClick={() => {
-            // isAuthenticated ? navigate("/shop") : popup(<LuUserRound  />);
-            navigate("/shop");
-          }}
-        >
-          Subscribe
-        </Button>
+        <div>
+          <Button
+            className="mt-0"
+            onClick={() => {
+              // isAuthenticated ? navigate("/shop") : popup(<LuUserRound  />);
+              navigate("/shop");
+            }}
+          >
+            Subscribe
+          </Button>
+        </div>
       </motion.div>
       <P variants={variants} custom={0.4} size="sm" className="mt-2 lg:mt-4">
         You will be able to unsubscribe at anytime.

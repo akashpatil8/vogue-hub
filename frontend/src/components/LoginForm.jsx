@@ -10,6 +10,7 @@ import { loginUser } from "../redux/slices/userSlice";
 import Spinner from "../ui/Spinner";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { emailValidation, passwordValidation } from "../utils/helper";
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,7 +23,7 @@ export default function LoginForm() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    defaultValues: { email: "akash@gmail.com", password: "Akash123" },
+    defaultValues: { email: "test@gmail.com", password: "Test@123" },
   });
 
   const handleLogin = async ({ email, password }) => {
@@ -44,7 +45,7 @@ export default function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit(handleLogin)}
-      className="mt-2 flex flex-col items-center lg:w-[65%]"
+      className="mt-2 flex w-full flex-col items-center lg:w-[65%]"
     >
       <div className="my-2 flex w-full items-center gap-2 rounded-sm bg-white px-2 py-2 lg:gap-4 lg:rounded-md lg:px-4">
         <LuMail className="text-slate-500 lg:text-xl" />
@@ -53,16 +54,15 @@ export default function LoginForm() {
           type="text"
           placeholder="Email"
           disabled={isUserLoading}
-          {...register("email", { required: "This field is required" })}
+          {...register("email", emailValidation)}
           className="h-6 text-sm text-slate-600 placeholder:text-slate-400 focus:outline-none lg:h-8 lg:text-base lg:placeholder:text-base"
         />
-        {errors?.email?.message && (
-          <p className="ml-auto text-[0.6rem] text-red-400 lg:text-xs">
-            {errors?.email?.message}
-          </p>
-        )}
       </div>
-
+      {errors?.email?.message && (
+        <p className="ml-auto text-[0.6rem] text-red-400 lg:text-xs">
+          {errors?.email?.message}
+        </p>
+      )}
       <div className="my-2 flex w-full items-center gap-2 rounded-sm bg-white px-2 py-2 lg:gap-4 lg:rounded-md lg:px-4">
         <LuLock className="text-slate-500 lg:text-xl" />
         <input
@@ -70,15 +70,11 @@ export default function LoginForm() {
           type={showPassword ? "text" : "password"}
           placeholder="Password"
           disabled={isUserLoading}
-          {...register("password", { required: "This field is required" })}
+          {...register("password", passwordValidation)}
           className="h-6 text-sm text-slate-600 placeholder:text-slate-400 focus:outline-none lg:h-8 lg:text-base lg:placeholder:text-base"
         />
         <div className="ml-auto cursor-pointer duration-300 hover:scale-110">
-          {errors?.password?.message ? (
-            <p className="ml-auto text-[0.6rem] text-red-400 lg:text-xs">
-              {errors?.password?.message}
-            </p>
-          ) : showPassword ? (
+          {showPassword ? (
             <FaRegEyeSlash
               onClick={() => setShowPassword(false)}
               className="text-sm text-slate-500 lg:text-xl"
@@ -91,8 +87,33 @@ export default function LoginForm() {
           )}
         </div>
       </div>
-      <Button type="simple">Forgot password?</Button>
-      <Button btnType="submit">{isUserLoading ? <Spinner /> : "Login"}</Button>
+      {errors?.password?.message && (
+        <p className="ml-auto text-[0.6rem] text-red-400 lg:text-xs">
+          {errors?.password?.message}
+        </p>
+      )}
+      <div className="my-1 flex w-full items-center justify-between">
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            name="rememberMe"
+            id="remember-me"
+            className="mr-2 accent-slate-800"
+          />
+          <label
+            htmlFor="remember-me"
+            className="text-xs text-slate-400 lg:text-sm"
+          >
+            Remember me
+          </label>
+        </div>
+        <button className="text-xs text-slate-400 lg:text-sm">
+          Forget password?
+        </button>
+      </div>
+      <Button btnType="submit" className="mt-2">
+        {isUserLoading ? <Spinner /> : "Login"}
+      </Button>
     </form>
   );
 }

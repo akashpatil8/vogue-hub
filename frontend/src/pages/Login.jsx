@@ -13,7 +13,7 @@ export default function Login() {
 
   return (
     <main className="grid h-screen place-items-center">
-      <div className="mx-auto flex h-[30rem] w-[80%] lg:px-20">
+      <div className="mx-auto flex h-[30rem] w-[80%] max-w-[1000px]">
         <aside className="relative hidden h-full lg:block lg:w-[40%]">
           <img
             src={loginBackgroundImg}
@@ -58,21 +58,27 @@ export default function Login() {
           <P size="sm">or use your email account</P>
           {showLogin ? <LoginForm /> : <SignUpForm />}
           {showLogin ? (
-            <Button
-              onClick={() => setShowLogin(false)}
-              type="simple"
-              className="lg:hidden"
-            >
-              Sign Up
-            </Button>
+            <span className="mt-2 block text-xs text-slate-400 lg:hidden">
+              Don&apos;t have an account?{" "}
+              <Button
+                onClick={() => setShowLogin(false)}
+                type="simple"
+                className="font-bold text-slate-500 lg:hidden"
+              >
+                Sign Up
+              </Button>
+            </span>
           ) : (
-            <Button
-              onClick={() => setShowLogin(true)}
-              type="simple"
-              className="lg:hidden"
-            >
-              Log in
-            </Button>
+            <span className="mt-2 block text-xs text-slate-400 lg:hidden">
+              Already have an account?{" "}
+              <Button
+                onClick={() => setShowLogin(true)}
+                type="simple"
+                className="font-bold text-slate-500 lg:hidden"
+              >
+                Log in
+              </Button>
+            </span>
           )}
         </aside>
       </div>

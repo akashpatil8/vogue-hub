@@ -26,3 +26,64 @@ export const getDeliveryDate = (daysAhead) => {
 
   return `${day}/${month}/${year}`;
 };
+
+// Form validations
+
+export const firstNameValidation = {
+  required: "Name is required.",
+  minLength: {
+    value: 3,
+    message: "Name must be at least 3 characters.",
+  },
+  maxLength: {
+    value: 50,
+    message: "Name must be at most 50 characters.",
+  },
+  validate: (value) =>
+    /^[A-Za-z\s]+$/.test(value) || "Name should contain only letters.",
+};
+
+export const lastNameValidation = {
+  validate: (value) =>
+    value === "" ||
+    /^[A-Za-z\s]+$/.test(value) ||
+    "Name should contain only letters.",
+};
+
+export const emailValidation = {
+  required: "Email is required.",
+  pattern: {
+    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    message: "Invalid email address.",
+  },
+};
+
+export const mobileValidate = {
+  required: "Mobile number is required.",
+  validate: (value) => {
+    const trimmed = value.trim();
+    const normalized = trimmed.replace(/^(\+91|0)/, "");
+
+    if (!/^\d+$/.test(normalized)) {
+      return "Mobile number not valid";
+    }
+
+    if (normalized.length !== 10) {
+      return "Mobile number must be 10 digits";
+    }
+
+    return true;
+  },
+};
+
+export const passwordValidation = {
+  required: "Password is required.",
+  minLength: {
+    value: 5,
+    message: "Password must be at least 5 characters.",
+  },
+  maxLength: {
+    value: 20,
+    message: "Password must be at most 20 characters.",
+  },
+};

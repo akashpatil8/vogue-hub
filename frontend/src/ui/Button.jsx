@@ -13,7 +13,7 @@ export default function Button({
     return (
       <button
         onClick={onClick}
-        className=" rounded-md border-[1.5px] border-slate-100 bg-transparent font-medium tracking-wide text-slate-100 duration-300 hover:bg-slate-200 hover:text-slate-800 focus:border-none focus:outline-none focus:ring-2 focus:ring-slate-100 lg:px-16 lg:py-3"
+        className="rounded-md border-[1.5px] border-slate-100 bg-transparent font-medium tracking-wide text-slate-100 duration-300 hover:bg-slate-200 hover:text-slate-800 focus:border-none focus:outline-none focus:ring-2 focus:ring-slate-100 lg:px-16 lg:py-3"
       >
         {children}
       </button>
@@ -79,7 +79,7 @@ export default function Button({
     <button
       type={btnType}
       onClick={onClick}
-      className="h-full cursor-pointer rounded-sm bg-slate-800 px-4 py-2 text-xs font-medium tracking-wide text-slate-100 duration-300 hover:bg-slate-700 hover:text-slate-100 focus:border-none focus:outline-none focus:ring-[1px] focus:ring-slate-800 lg:rounded-md lg:px-16 lg:py-2 lg:text-lg"
+      className="h-full w-full cursor-pointer rounded-sm bg-slate-800 px-4 py-2 text-xs font-medium tracking-wide text-slate-100 duration-300 hover:bg-slate-700 hover:text-slate-100 focus:border-none focus:outline-none focus:ring-[1px] focus:ring-slate-800 lg:rounded-md lg:px-16 lg:py-2 lg:text-lg"
     >
       {children}
     </button>

@@ -27,9 +27,11 @@ export default function CouponComponent({ variants }) {
             className="text-sm text-slate-600 placeholder:text-xs placeholder:text-slate-400 focus:outline-none lg:text-base lg:placeholder:text-base"
           />
         </div>
-        <Button onClick={() => toast.error("Coupon code invalid")}>
-          Apply
-        </Button>
+        <div>
+          <Button onClick={() => toast.error("Coupon code invalid")}>
+            Apply
+          </Button>
+        </div>
       </motion.div>
     </div>
   );

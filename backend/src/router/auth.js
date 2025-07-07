@@ -8,7 +8,7 @@ authRouter.post("/signup", async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
 
-    if (!lastName || !firstName || !email || !password) {
+    if (!firstName || !email || !password) {
       throw new Error("Please fill in all fields");
     }
 
@@ -32,6 +32,15 @@ authRouter.post("/signup", async (req, res) => {
 
     res.json({ message: "User created successfully", user });
   } catch (error) {
+    if (error.code === 11000) {
+      res
+        .status(409)
+        .json({
+          success: false,
+          message:
+            "Email is already resgistered. Please login or reset the password",
+        });
+    }
     res.status(500).json({ message: error.message });
   }
 });
