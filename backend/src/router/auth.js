@@ -194,7 +194,8 @@ authRouter.post("/forget-password", async (req, res) => {
 
     const token = generateJWT(user._id, "15min");
 
-    const resetLink = `http://localhost:5173/reset-password?token=${token}`;
+    const resetLink = `${process.env.FRONTEND_BASE_URL}/reset-password?token=${token}`;
+
     const template = emailTemplate
       .replace("{{firstName}}", user.firstName)
       .replace("{{resetLink}}", resetLink);
