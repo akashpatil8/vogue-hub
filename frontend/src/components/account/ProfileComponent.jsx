@@ -1,25 +1,31 @@
+import axios from "axios";
 import toast from "react-hot-toast";
+import Button from "../../ui/Button";
+import Spinner from "../../ui/Spinner";
+import ImageKit from "imagekit-javascript";
+import profileIcon from "../../../public/assets/profile-icon.png";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { HiMiniPencil } from "react-icons/hi2";
+import { BASE_URL } from "../../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
+import { updateUser } from "../../redux/slices/userSlice";
 import { LuMail, LuPhone, LuUserRound } from "react-icons/lu";
 
-import Button from "../../ui/Button";
-import Spinner from "../../ui/Spinner";
-import profileIcon from "../../../public/assets/profile-icon.png";
-
-import { updateUser, uploadProfilePicture } from "../../redux/slices/userSlice";
+const imagekit = new ImageKit({
+  publicKey: "public_gZ+BiHYdLPlQZ968XzgyLgRx0kY=",
+  urlEndpoint: "https://ik.imagekit.io/akashpatil8",
+});
 
 export default function ProfileComponent() {
   const dispatch = useDispatch();
   const [previewImage, setPreviewImage] = useState(null);
   const [profilePicture, setProfilePicture] = useState(null);
+  const [isProfilePictureUploading, setIsProfilePictureUploading] =
+    useState(false);
 
-  const { user, isUserDataUpdating, isUserProfilePictureLoading } = useSelector(
-    (store) => store.user,
-  );
+  const { user, isUserDataUpdating } = useSelector((store) => store.user);
 
   const {
     register,
@@ -59,20 +65,64 @@ export default function ProfileComponent() {
   };
 
   const handleSaveProfilePicture = async () => {
-    const formData = new FormData();
-    formData.append("file", profilePicture);
-
-    const resultAction = await dispatch(uploadProfilePicture(formData));
-
-    if (uploadProfilePicture.fulfilled.match(resultAction)) {
-      toast.success("Profile picture saved successfully!");
-    } else {
-      console.error(resultAction.payload || "Error while saving profile");
-      toast.error(resultAction.payload || "Error while saving profile");
+    if (!profilePicture) {
+      toast.error("Please select an image!");
+      return;
     }
-    document.getElementById("my_modal_2").close();
-    setPreviewImage(null);
+    setIsProfilePictureUploading(true);
+
+    try {
+      // Get fresh auth params before each upload
+      const res = await axios.get(BASE_URL + "/imagekit-auth");
+      if (res.status !== 200 || !res.data?.result) {
+        throw new Error("Failed to get ImageKit auth token");
+      }
+
+      const freshToken = res.data.result;
+
+      imagekit.upload(
+        {
+          file: profilePicture,
+          fileName: `profile-${user?._id}`,
+          folder: "/Voguehub/profile-picture",
+          useUniqueFileName: false,
+          token: freshToken.token,
+          signature: freshToken.signature,
+          expire: freshToken.expire,
+        },
+        async (err, result) => {
+          if (err) {
+            console.error(err);
+            toast.error("Upload failed");
+            setIsProfilePictureUploading(false);
+          }
+
+          const resultAction = await dispatch(
+            updateUser({ imageUrl: result.url }),
+          );
+          if (updateUser.fulfilled.match(resultAction)) {
+            toast.success("Profile picture saved successfully!");
+          } else {
+            toast.error("Error while saving profile");
+          }
+          document.getElementById("my_modal_2").close();
+          setPreviewImage(null);
+          setProfilePicture(null);
+          setIsProfilePictureUploading(false);
+        },
+      );
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "Something went wrong");
+      setIsProfilePictureUploading(false);
+    }
   };
+
+  const handleOpenProfilePictureModel = () => {
+    document.getElementById("my_modal_2").showModal();
+  };
+
+  console.log(user?.imageUrl);
 
   return (
     <form
@@ -97,7 +147,7 @@ export default function ProfileComponent() {
           </div>
           <div className="flex gap-2">
             <Button onClick={handleSaveProfilePicture}>
-              {isUserProfilePictureLoading ? "Loading" : "Upload"}
+              {isProfilePictureUploading ? <Spinner /> : "Upload"}
             </Button>
 
             <Button
@@ -113,7 +163,7 @@ export default function ProfileComponent() {
         <div className="w-24 rounded-full ring ring-slate-400 ring-offset-2 ring-offset-base-100">
           <button
             //Opens the dialog for image upload
-            onClick={() => document.getElementById("my_modal_2").showModal()}
+            onClick={handleOpenProfilePictureModel}
             type="button"
             className="absolute bottom-0 right-0 rounded-full border-[1px] border-slate-500 bg-slate-200 p-1"
           >
@@ -122,9 +172,10 @@ export default function ProfileComponent() {
           <img
             src={
               user.imageUrl
-                ? `http://127.0.0.1:4000/uploads/${user.imageUrl}`
+                ? `${user.imageUrl}?t=${new Date().getTime()}`
                 : profileIcon
             }
+            alt="user profile image"
           />
         </div>
       </div>

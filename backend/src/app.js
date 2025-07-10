@@ -17,10 +17,11 @@ app.use("/uploads", express.static("uploads"));
 
 const cartRouter = require("./router/cart");
 const authRouter = require("./router/auth");
-const productsRouter = require("./router/products");
-const wishlistRouter = require("./router/wishlist");
 const userRouter = require("./router/user");
 const orderRouter = require("./router/order");
+const productsRouter = require("./router/products");
+const wishlistRouter = require("./router/wishlist");
+const imagekitRouter = require("./router/imagekit");
 
 app.use("/api", authRouter);
 app.use("/api", cartRouter);
@@ -28,6 +29,7 @@ app.use("/api", userRouter);
 app.use("/api", orderRouter);
 app.use("/api", productsRouter);
 app.use("/api", wishlistRouter);
+app.use("/api", imagekitRouter);
 
 // Catch-all route to serve `index.html`
 app.get("*", (req, res) => {

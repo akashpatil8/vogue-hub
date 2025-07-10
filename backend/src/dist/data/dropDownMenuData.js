@@ -9,7 +9,7 @@ export const dropDownMenuData = [
   },
   {
     name: "Cart",
-    to: "/cart",
+    to: "/checkout/cart",
   },
   {
     name: "Settings",
