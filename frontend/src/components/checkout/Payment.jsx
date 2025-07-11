@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
 import { BASE_URL } from "../../utils/constants";
 import { loadRazorpayScript } from "../../utils/helper";
 
@@ -48,36 +47,6 @@ export default function Payment() {
       attempt++;
     }, 3000); // every 3 seconds
   };
-
-  // const handelOrderSave = async (response) => {
-  //   const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-  //     response;
-
-  //   try {
-  //     const res = await axios.post(
-  //       BASE_URL + "/orders/save",
-  //       {
-  //         orderId: razorpay_order_id,
-  //         paymentId: razorpay_payment_id,
-  //         signature: razorpay_signature,
-  //         notes: order?.notes,
-  //       },
-  //       { withCredentials: true },
-  //     );
-
-  //     if (res.status === 200) {
-  //       toast.success("Payment Successful");
-  //       navigate("/order/confirmation", {
-  //         state: {
-  //           orderId: razorpay_order_id,
-  //           totalPrice: order?.notes?.totalPrice,
-  //         },
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error(error.message);
-  //   }
-  // };
 
   const handelPayments = async () => {
     try {
@@ -123,9 +92,9 @@ export default function Payment() {
   return (
     <>
       {isPaymentVerifying ? (
-        <div className="flex min-h-screen items-center justify-center">
+        <div className="flex flex-1 items-center justify-center">
           <div className="text-center">
-            <div className="loader mb-4 h-12 w-12 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
+            <div className="loader mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
             <p className="text-lg font-medium text-gray-700">
               Verifying Payment...
             </p>

@@ -8,6 +8,16 @@ const path = require("path");
 
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
+// Special parser for Razorpay webhook route
+app.use(
+  "/api/webhook/razorpay",
+  express.json({
+    verify: (req, res, buf) => {
+      req.rawBody = buf;
+    },
+  })
+);
+
 app.use(express.json());
 app.use(cookieParser());
 

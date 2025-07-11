@@ -59,51 +59,17 @@ orderRouter.post("/orders", userAuth, async (req, res) => {
   }
 });
 
-orderRouter.post("/orders/save", userAuth, async (req, res) => {
+orderRouter.get("/orders/payment-status/:orderId", async (req, res) => {
   try {
-    const { user } = req;
-    const { orderId, paymentId, signature, notes } = req.body;
+    const order = await Order.findOne({ orderId: req.params.orderId });
 
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    if (!orderId || !paymentId || !signature || !notes)
-      return res.status(400).json({ message: "Invalid data" });
-
-    const genertedSignature = crypto
-      .createHmac("sha256", process.env.TEST_SECRET_KEY)
-      .update(orderId + "|" + paymentId)
-      .digest("hex");
-
-    // Verify the signature
-    if (genertedSignature !== signature) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid payment signature" });
+    if (!order) {
+      return res.status(202).json({ message: "Pending" }); // 202 = Accepted, not yet processed
     }
 
-    // Save order in DB
-    const order = new Order({
-      userId: user._id,
-      name: notes.name,
-      mobile: notes.mobile,
-      shippingAddress: notes.shippingAddress,
-      totalPrice: notes.amount / 100,
-      orderItems: notes.orderItems,
-      paymentId,
-      orderId,
-      signature,
-    });
-
-    await order.save();
-
-    await Cart.findOneAndUpdate(
-      { userId: user._id },
-      { $set: { cartItems: [] } }
-    );
-
-    res.json({ message: "Order saved successfully" });
+    res.status(200).json({ message: "Payment successful", order });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Something went wrong" });
   }
 });
 
