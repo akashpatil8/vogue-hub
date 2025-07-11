@@ -40,6 +40,7 @@ orderRouter.post("/orders", userAuth, async (req, res) => {
       currency: "INR",
       receipt: crypto.randomBytes(10).toString("hex"),
       notes: {
+        userId: user._id.toString(),
         name,
         mobile,
         shippingAddress,
@@ -68,6 +69,19 @@ orderRouter.post("/orders/save", userAuth, async (req, res) => {
     if (!orderId || !paymentId || !signature || !notes)
       return res.status(400).json({ message: "Invalid data" });
 
+    const genertedSignature = crypto
+      .createHmac("sha256", process.env.TEST_SECRET_KEY)
+      .update(orderId + "|" + paymentId)
+      .digest("hex");
+
+    // Verify the signature
+    if (genertedSignature !== signature) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid payment signature" });
+    }
+
+    // Save order in DB
     const order = new Order({
       userId: user._id,
       name: notes.name,
