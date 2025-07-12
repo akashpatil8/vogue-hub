@@ -87,3 +87,11 @@ export const passwordValidation = {
     message: "Password must be at most 20 characters.",
   },
 };
+
+export const pinCodeValidation = {
+  required: "Pin code is required.",
+  pattern: {
+    value: /^[1-9][0-9]{5}$/,
+    message: "Invalid PIN code",
+  },
+};

@@ -98,7 +98,7 @@ export default function SignUpForm() {
           placeholder="Email"
           disabled={isUserLoading}
           {...register("email", emailValidation)}
-          className="h-6 text-sm text-slate-600 placeholder:text-slate-400 focus:outline-none lg:h-8 lg:text-base lg:placeholder:text-base"
+          className="h-6 flex-1 text-sm text-slate-600 placeholder:text-slate-400 focus:outline-none lg:h-8 lg:text-base lg:placeholder:text-base"
         />
       </div>
       {errors?.email?.message && (
@@ -115,7 +115,7 @@ export default function SignUpForm() {
           placeholder="Password"
           disabled={isUserLoading}
           {...register("password", passwordValidation)}
-          className="h-6 text-sm text-slate-600 placeholder:text-slate-400 focus:outline-none lg:h-8 lg:text-base lg:placeholder:text-base"
+          className="h-6 flex-1 text-sm text-slate-600 placeholder:text-slate-400 focus:outline-none lg:h-8 lg:text-base lg:placeholder:text-base"
         />
         <div className="ml-auto cursor-pointer duration-300 hover:scale-110">
           {showPassword ? (

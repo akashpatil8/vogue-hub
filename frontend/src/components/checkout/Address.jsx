@@ -4,6 +4,15 @@ import { useDispatch } from "react-redux";
 import { addOrder } from "../../redux/slices/orderSlice";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
+import { LuBuilding2, LuPhone, LuUserRound } from "react-icons/lu";
+import {
+  firstNameValidation,
+  mobileValidate,
+  pinCodeValidation,
+} from "../../utils/helper";
+import { FaRegAddressBook } from "react-icons/fa";
+import { PiLetterCirclePBold } from "react-icons/pi";
+import { GrLocation } from "react-icons/gr";
 
 export default function Address() {
   const navigate = useNavigate();
@@ -58,79 +67,51 @@ export default function Address() {
           onSubmit={handleSubmit(handleFormSubmit)}
           className="my-4 flex w-full flex-col gap-4 lg:mt-8 lg:max-w-[50%]"
         >
-          <input
-            type="text"
+          <InputComponent
             placeholder="Full Name"
-            className="rounded border border-gray-300 p-2"
-            {...register("name", {
-              required: "Name is required",
-              minLength: {
-                value: 3,
-                message: "Name must be at least 3 characters",
-              },
-            })}
+            id="name"
+            icon={<LuUserRound className="text-slate-500 lg:text-xl" />}
+            register={register("name", firstNameValidation)}
+            error={errors?.name?.message}
           />
-          {errors?.name?.message && (
-            <p className="-my-2 ml-auto text-[0.6rem] text-red-400 lg:text-xs">
-              {errors?.name?.message}
-            </p>
-          )}
-          <input
-            type="text"
-            placeholder="Mobile Number"
-            className="rounded border border-gray-300 p-2"
-            {...register("mobile", {
-              required: "Mobile number is required",
-            })}
+          <InputComponent
+            placeholder="Mobile"
+            id="mobile"
+            icon={<LuPhone className="text-slate-500 lg:text-xl" />}
+            register={register("mobile", mobileValidate)}
+            error={errors?.mobile?.message}
           />
-          {errors?.mobile?.message && (
-            <p className="-my-2 ml-auto text-[0.6rem] text-red-400 lg:text-xs">
-              {errors?.mobile?.message}
-            </p>
-          )}
-          <input
-            type="text"
-            placeholder="Street Address"
-            className="rounded border border-gray-300 p-2"
-            {...register("street", {
-              required: "Street address is required",
+          <InputComponent
+            placeholder="Address"
+            id="address"
+            icon={<FaRegAddressBook className="text-slate-500 lg:text-xl" />}
+            register={register("address", {
+              required: "Address is required.",
+              minLength: { value: 5, message: "Address is short" },
             })}
+            error={errors?.address?.message}
           />
-          {errors?.street?.message && (
-            <p className="-my-2 ml-auto text-[0.6rem] text-red-400 lg:text-xs">
-              {errors?.street?.message}
-            </p>
-          )}
-          <input
-            type="text"
+          <InputComponent
             placeholder="City"
-            className="rounded border border-gray-300 p-2"
-            {...register("city")}
+            id="city"
+            icon={<LuBuilding2 className="text-slate-500 lg:text-xl" />}
+            register={register("city", { required: "City is required." })}
+            error={errors?.city?.message}
           />
-          <input
-            type="text"
-            placeholder="State/Province/Region"
-            className="rounded border border-gray-300 p-2"
-            {...register("state", { required: "State is required" })}
+          <InputComponent
+            placeholder="State"
+            id="state"
+            icon={<GrLocation className="text-slate-500 lg:text-xl" />}
+            register={register("state", { required: "State is required." })}
+            error={errors?.state?.message}
           />
-          {errors?.state?.message && (
-            <p className="-my-2 ml-auto text-[0.6rem] text-red-400 lg:text-xs">
-              {errors?.state?.message}
-            </p>
-          )}
-          <input
-            type="text"
-            placeholder="Postal Code"
-            className="rounded border border-gray-300 p-2"
-            {...register("postal", {
-              required: "Postal code is required",
-            })}
+          <InputComponent
+            placeholder="Pin code"
+            id="pin"
+            icon={<PiLetterCirclePBold className="text-slate-500 lg:text-xl" />}
+            register={register("pin", pinCodeValidation)}
+            error={errors?.pin?.message}
           />
-          {errors?.postal?.message && (
-            <p className="-my-2 ml-auto text-[0.6rem] text-red-400 lg:text-xs">
-              {errors?.postal?.message}
-            </p>
-          )}
         </form>
       </aside>
       <div className="w-[1px] bg-[#e5e7eb]"></div>
@@ -172,3 +153,32 @@ export default function Address() {
     </section>
   );
 }
+
+const InputComponent = ({
+  icon,
+  register,
+  type = "text",
+  disabled = false,
+  placeholder = "",
+  id = "",
+  error = "",
+}) => {
+  return (
+    <div className="mb-1">
+      <div className="flex w-full items-center gap-2 rounded-sm border-[1px] border-slate-300 bg-white px-2 py-2 focus:outline-1 lg:rounded-md lg:px-4">
+        {icon}
+        <input
+          id={id}
+          type={type}
+          placeholder={placeholder}
+          disabled={disabled}
+          {...register}
+          className="h-6 text-sm text-slate-600 placeholder:text-slate-400 focus:outline-none lg:h-8 lg:text-base lg:placeholder:text-base"
+        />
+      </div>
+      {error && (
+        <p className="ml-auto text-[0.6rem] text-red-400 lg:text-xs">{error}</p>
+      )}
+    </div>
+  );
+};
