@@ -30,10 +30,10 @@ export default function Address() {
   const handleFormSubmit = async ({
     name,
     mobile,
-    street,
+    address,
     city,
     state,
-    postal,
+    pin,
   }) => {
     if (cartItems.length === 0) return toast.error("Please add items to cart");
 
@@ -42,8 +42,7 @@ export default function Address() {
     const backendData = {
       name,
       mobile,
-      shippingAddress: `${street}, ${city}, ${state}, ${postal}`,
-      paymentStatus: "pending",
+      shippingAddress: `${address}, ${city}, ${state}, ${pin}`,
       totalPrice: total,
       orderItems: itemIds,
     };

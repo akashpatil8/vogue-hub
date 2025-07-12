@@ -17,9 +17,10 @@ orderRouter.get("/orders", userAuth, async (req, res) => {
     const { user } = req;
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    const orders = await Order.find({ userId: user._id }).populate(
-      "orderItems"
-    );
+    const orders = await Order.find({ userId: user._id })
+      .populate("orderItems")
+      .select("-paymentId -signature")
+      .sort({ createdAt: -1 });
     if (!orders) return res.status(404).json({ message: "Orders not found" });
 
     res.json({ orders });
@@ -33,7 +34,10 @@ orderRouter.post("/orders", userAuth, async (req, res) => {
     const { user } = req;
     const { name, mobile, shippingAddress, totalPrice, orderItems } = req.body;
 
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
 
     const options = {
       amount: totalPrice * 100,
@@ -50,12 +54,22 @@ orderRouter.post("/orders", userAuth, async (req, res) => {
     };
 
     const order = await razorpay.orders.create(options);
-    if (!order)
-      return res.status(500).json({ message: "Order creation failed" });
 
-    res.json({ message: "Order created successfully", order });
+    if (!order)
+      return res
+        .status(500)
+        .json({ success: false, message: "Order creation failed" });
+
+    return res.json({
+      success: true,
+      message: "Order created successfully",
+      order,
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal server error",
+    });
   }
 });
 

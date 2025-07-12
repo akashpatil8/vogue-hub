@@ -21,14 +21,14 @@ export default function Account() {
   )?.component;
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-[5%] pt-4 lg:px-[8%]">
-      <div className="flex h-full w-full items-center justify-start">
-        <ul className="flex w-[30%] flex-col items-end gap-4 text-right">
+    <main className="flex flex-1 justify-center px-[5%] py-20 lg:px-[8%]">
+      <div className="relative flex h-full w-full items-start justify-start">
+        <ul className="static top-0 flex w-[15%] flex-col gap-4">
           {accountMenuData.map((item) => (
-            <li key={item.name} className="w-[50%]">
+            <li key={item.name}>
               <button
                 onClick={() => setSelectedMenu(item.name)}
-                className={`btn w-full rounded-md border-none text-right text-lg ${selectedMenu === item.name ? "bg-slate-200 font-medium text-slate-800" : "bg-white font-normal text-slate-600 hover:bg-slate-100"}`}
+                className={`btn w-full rounded-[4px] border-none text-right text-lg ${selectedMenu === item.name ? "bg-slate-200 font-medium text-slate-800" : "bg-white font-normal text-slate-600 hover:bg-slate-100"}`}
               >
                 {item.name}
               </button>

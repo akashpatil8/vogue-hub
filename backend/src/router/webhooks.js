@@ -18,8 +18,6 @@ webhookRouter.post("/webhook/razorpay", async (req, res) => {
       .update(req.rawBody)
       .digest("hex");
 
-    console.log(genertedSignature, signature);
-
     if (signature !== genertedSignature) {
       console.log("Webhook signature mismatch");
       return res
@@ -34,7 +32,7 @@ webhookRouter.post("/webhook/razorpay", async (req, res) => {
     }
 
     const payment = event.payload.payment.entity;
-    const { order_id, id: paymentId, notes = {} } = payment;
+    const { order_id, id: paymentId, notes = {}, amount } = payment;
 
     // UserId sent through the note while creating the order
     const { userId } = notes;
@@ -51,7 +49,7 @@ webhookRouter.post("/webhook/razorpay", async (req, res) => {
       name: notes.name,
       mobile: notes.mobile,
       shippingAddress: notes.shippingAddress,
-      totalPrice: notes.amount / 100,
+      totalPrice: amount / 100,
       orderItems: notes.orderItems,
       paymentId,
       orderId: order_id,
